@@ -2,14 +2,17 @@ package be.jonasboon.ui;
 
 import be.jonasboon.service.FileService;
 import be.jonasboon.service.FolderService;
+import be.jonasboon.service.TaskArchiveService;
 
-import java.util.Arrays;
 import java.util.Scanner;
+
+import static be.jonasboon.constants.UIContstants.UI_POSSIBLE_CHOICES;
 
 public class CLI_UI {
 
     private FileService fileService = new FileService();
     private FolderService folderService = new FolderService();
+    private TaskArchiveService taskArchiveService = new TaskArchiveService();
 
     public void mainApp(){
         Scanner scanner = new Scanner(System.in);
@@ -20,12 +23,7 @@ public class CLI_UI {
 
     private void chooseTask(Scanner scanner) {
         presentMenu();
-        String choice = scanner.next();
-        while(!isValidChoice(choice)){
-            presentMenu();
-            choice = scanner.next();
-        }
-        switch (choice){
+        switch (getChoice(scanner)){
             case "1":
                 fileService.createTextFile();
                 break;
@@ -36,13 +34,23 @@ public class CLI_UI {
                 fileService.createScreenShotArchiveOfTheDay();
                 break;
             case "4":
+                taskArchiveService.openFile();
+            case "5":
                 break;
         }
     }
 
+    private String getChoice(Scanner scanner) {
+        String choice = scanner.next();
+        while(!isValidChoice(choice)){
+            presentMenu();
+            choice = scanner.next();
+        }
+        return choice;
+    }
+
     private boolean isValidChoice(String choice) {
-        String[] validChoices = {"1", "2","3","4"};
-        return Arrays.asList(validChoices).contains(choice);
+        return UI_POSSIBLE_CHOICES.contains(choice);
     }
 
     private void presentMenu() {
@@ -50,7 +58,8 @@ public class CLI_UI {
         choices.append("1) Create Text File\n");
         choices.append("2) Create Folder\n");
         choices.append("3) Create Screenshot Archive For The Day\n");
-        choices.append("4) Exit\n");
+        choices.append("4) Open file\n");
+        choices.append("5) Exit\n");
         choices.append("> ");
         System.out.print(choices);
     }

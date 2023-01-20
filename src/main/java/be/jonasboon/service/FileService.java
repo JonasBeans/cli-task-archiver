@@ -15,7 +15,7 @@ public class FileService {
             System.out.println("File not created");
     }
 
-    private String askFolderName() {
+    protected String askFolderName() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Folder name to put file in: ");
         String foldername = scanner.nextLine();
@@ -28,18 +28,27 @@ public class FileService {
         return "this".equals(folderName) ? "./" : folderName ;
     }
 
-    private String askFileName() {
+    protected String askFileName() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Folder name: ");
+        System.out.print("File name: ");
         String filename = scanner.nextLine();
         while (filename.trim().isEmpty()) {
             System.out.println("File can't be empty!");
             System.out.println("File name: ");
             filename = scanner.nextLine();
         }
-        String fileName = "today".equals(filename) ? LocalDate.now().toString() : filename;
-        return "this".equals(fileName) ? "./" : fileName ;
+        return "today".equals(filename) ? LocalDate.now().toString() : filename;
     }
+
+    protected File selectTextFile(){
+        File file = new File(String.format("%s/%s.txt", askFolderName(), askFileName()));
+        if (!file.exists()){
+            System.out.println("File created");
+            throw new RuntimeException("File doesn't exist");
+        }
+        return file;
+    }
+
     private boolean tryCreateFile(File file){
         try {
             return file.createNewFile();
@@ -62,9 +71,5 @@ public class FileService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void addTimeStampToTextInFile(){
-
     }
 }

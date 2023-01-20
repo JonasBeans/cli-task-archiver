@@ -15,7 +15,7 @@ public class FolderService {
             System.out.println("Folder not created");
     }
 
-    private String askFolderName() {
+    protected String askFolderName() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Folder name: ");
         String foldername = scanner.nextLine();
