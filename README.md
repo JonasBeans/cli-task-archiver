@@ -1,4 +1,4 @@
-# cli-task-archiver
+# commandLineInterface-task-archiver
 
 Mini project to archive my tasks at work that are done.
 
