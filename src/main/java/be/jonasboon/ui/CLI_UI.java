@@ -34,8 +34,10 @@ public class CLI_UI {
                 fileService.createScreenShotArchiveOfTheDay();
                 break;
             case "4":
-                taskArchiveService.openFile();
+                taskArchiveService.openFileInWindow();
             case "5":
+                taskArchiveService.addTimeStampToTextInFile();
+            case "6":
                 break;
         }
     }
@@ -59,7 +61,8 @@ public class CLI_UI {
         choices.append("2) Create Folder\n");
         choices.append("3) Create Screenshot Archive For The Day\n");
         choices.append("4) Open file\n");
-        choices.append("5) Exit\n");
+        choices.append("5) Add time stamp to exiting file\n");
+        choices.append("6) Exit\n");
         choices.append("> ");
         System.out.print(choices);
     }
