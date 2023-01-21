@@ -1,0 +1,1 @@
+java -jar cli-task-archiver-jar-with-dependencies.jar
