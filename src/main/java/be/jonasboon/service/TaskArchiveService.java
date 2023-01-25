@@ -1,5 +1,7 @@
 package be.jonasboon.service;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.naming.OperationNotSupportedException;
 import java.awt.*;
 import java.io.BufferedWriter;
@@ -8,31 +10,35 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import static be.jonasboon.constants.UIContstants.createTimeStamp;
+import static be.jonasboon.utils.TimeUtils.getMonthYearName;
 
+
+@Slf4j
 public class TaskArchiveService {
 
     FileService fileService = new FileService();
 
-    private void tryOpenFile() throws IOException, OperationNotSupportedException {
-        File file = fileService.selectTextFile();
+    private void tryOpenFile(String fileName) throws IOException, OperationNotSupportedException {
+        File file = new File(fileName);
         Desktop desktop = isDesktopSupported();
         desktop.open(file);
     }
 
-    public void openFileInWindow() {
+    public void openFileInWindow(String fileName) {
         try {
-            tryOpenFile();
+            tryOpenFile(fileName);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (OperationNotSupportedException e) {
             System.out.println(e.getMessage());
-            throw new RuntimeException(e);
+            log.warn(e.getMessage());
         }
     }
 
-    private Desktop isDesktopSupported() throws OperationNotSupportedException {
+    private Desktop isDesktopSupported() {
         if(!Desktop.isDesktopSupported()){
-            throw new OperationNotSupportedException("Desktop is not supported");
+            System.out.println("Desktop not supported");
+            log.error("Desktop not supported");
         }
         return Desktop.getDesktop();
     }
@@ -44,10 +50,29 @@ public class TaskArchiveService {
             throw new RuntimeException(e);
         }
     }
-    private  void tryAddTimeStampToTextInFile() throws IOException {
+    private void tryAddTimeStampToTextInFile() throws IOException {
         File file = fileService.selectTextFile();
         try (BufferedWriter bf = new BufferedWriter(new FileWriter(file, true))) {
-            bf.append(createTimeStamp());
+            bf.write(createTimeStamp());
         }
+    }
+
+    public void addTaskToArchive(){
+        tryAddTaskToArchive();
+    }
+
+    private  void tryAddTaskToArchive() {
+        File file = new File("./" + getMonthYearName() + ".txt");
+        if (fileService.tryCreateFile(file))
+            log.info("File created: {}", file.getName());
+        else
+            log.info("Adding timestamp to existing {}", file.getName());
+
+        try (BufferedWriter bf = new BufferedWriter(new FileWriter(file, true))) {
+            bf.write(createTimeStamp());
+        } catch (IOException e) {
+            log.warn("File can not be processed: {}",file.getName());
+        }
+        openFileInWindow(file.getName());
     }
 }

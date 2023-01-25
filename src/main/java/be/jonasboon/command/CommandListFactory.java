@@ -13,12 +13,14 @@ public class CommandListFactory {
         Command createScreenShotArchiveOfTheDayCommand = new CreateScreenShotArchiveOfTheDayCommand();
         Command openFileInWindowCommand = new OpenFileInWindowCommand();
         Command addTimeStampToTextInFileCommand = new AddTimeStampToTextInFileCommand();
+        Command addTaskToArchive = new AddTaskToArchive();
 
         commands.add(createFileCommand);
         commands.add(createFolder);
         commands.add(createScreenShotArchiveOfTheDayCommand);
         commands.add(openFileInWindowCommand);
         commands.add(addTimeStampToTextInFileCommand);
+        commands.add(addTaskToArchive);
 
        return commands;
     }

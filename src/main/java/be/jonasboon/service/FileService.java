@@ -17,7 +17,7 @@ public class FileService {
 
     protected String askFolderName() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Folder name to put file in: ");
+        System.out.print("Folder name: ");
         String foldername = scanner.nextLine();
         while (foldername.trim().isEmpty()) {
             System.out.println("Foldername can't be empty!");
@@ -28,7 +28,7 @@ public class FileService {
         return "this".equals(folderName) ? "./" : folderName ;
     }
 
-    protected String askFileName() {
+    public String askFileName() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("File name: ");
         String filename = scanner.nextLine();
@@ -43,13 +43,13 @@ public class FileService {
     protected File selectTextFile(){
         File file = new File(String.format("%s/%s.txt", askFolderName(), askFileName()));
         if (!file.exists()){
-            System.out.println("File created");
+            System.out.println("File doesn't exist");
             throw new RuntimeException("File doesn't exist");
         }
         return file;
     }
 
-    private boolean tryCreateFile(File file){
+    protected boolean tryCreateFile(File file){
         try {
             return file.createNewFile();
         } catch (IOException e) {
