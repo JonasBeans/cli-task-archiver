@@ -28,16 +28,14 @@ public class TaskArchiveService {
         try {
             tryOpenFile(fileName);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("Something is wrong with the file");
         } catch (OperationNotSupportedException e) {
-            System.out.println(e.getMessage());
-            log.warn(e.getMessage());
+            throw new UnsupportedOperationException();
         }
     }
 
     private Desktop isDesktopSupported() {
         if(!Desktop.isDesktopSupported()){
-            System.out.println("Desktop not supported");
             log.error("Desktop not supported");
         }
         return Desktop.getDesktop();
@@ -47,7 +45,7 @@ public class TaskArchiveService {
         try {
             tryAddTimeStampToTextInFile();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("Something wrong with the file");
         }
     }
     private void tryAddTimeStampToTextInFile() throws IOException {

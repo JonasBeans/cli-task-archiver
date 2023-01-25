@@ -1,18 +1,21 @@
 package be.jonasboon.service;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+@Slf4j
 public class FolderService {
 
     public void creatFolder() {
         String folderNamer = askFolderName();
         File file = new File(String.format("./%s", folderNamer));
         if (file.mkdir())
-            System.out.println("Folder created");
+            log.info("Folder created");
         else
-            System.out.println("Folder not created");
+            log.info("Folder not created");
     }
 
     protected String askFolderName() {
@@ -20,8 +23,8 @@ public class FolderService {
         System.out.print("Folder name: ");
         String foldername = scanner.nextLine();
         while (foldername.trim().isEmpty()) {
-            System.out.println("Foldername can't be empty!");
-            System.out.println("Folder name: ");
+            log.warn("Foldername must not be empty!");
+            System.out.print("Folder name: ");
             foldername = scanner.nextLine();
         }
         return foldername.equals("today") ? LocalDate.now().toString() : foldername;
